@@ -23,4 +23,4 @@ class S3:
         self.client.download_file(bucket, file_name, local_file_path)
 
     def upload(self, local_file_path, bucket, file_name):
-        self.client.uplload_file(local_file_path, bucket, file_name)
+        self.client.upload_file(local_file_path, bucket, file_name)
