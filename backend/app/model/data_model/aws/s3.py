@@ -3,7 +3,7 @@ import os
 
 
 class S3:
-    def __init__(self, aws_access_key_id=None, aws_secret_access_key=None, region_name=None):
+    def __init__(self, region_name=None):
         self.region_name = region_name or os.getenv("AWS_REGION_NAME")
         self.client = boto3.client(
             's3',
