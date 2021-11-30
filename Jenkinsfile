@@ -16,9 +16,9 @@ pipeline {
             steps {
                 echo 'Testing..'
                 sh "docker network create --driver=bridge --subnet=192.168.0.0/16 testnet"
-                sh "echo AWS_ACCESS_KEY_ID=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .AccessKeyId | sed 's/^\"\(.*\)\"$/\1/g') >> env"
-                sh "echo AWS_SECRET_ACCESS_KEY=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .SecretAccessKey | sed 's/^\"\(.*\)\"$/\1/g') >> env"
-                sh "echo AWS_SESSION_TOKEN=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .Token | sed 's/^\"\(.*\)\"$/\1/g') >> env"
+                sh "echo AWS_ACCESS_KEY_ID=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .AccessKeyId) >> env"
+                sh "echo AWS_SECRET_ACCESS_KEY=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .SecretAccessKey) >> env"
+                sh "echo AWS_SESSION_TOKEN=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .Token) >> env"
                 sh "echo  S3_BUCKET=testprojectmessages >> env"
                 sh "echo MESSAGES_FILE=messages.txt >> env"
                 sh "echo  AWS_REGION_NAME=us-east-2 >> env"
@@ -26,6 +26,7 @@ pipeline {
                 sh "docker run -d --network=testnet --ip=192.168.0.2  --env-file env 261110884830.dkr.ecr.us-east-2.amazonaws.com/test_project:backend"
                 sh "docker run -d --network=testnet --ip=192.168.0.3  --env BACKEND_URL=http://192.168.0.2 261110884830.dkr.ecr.us-east-2.amazonaws.com/test_project:frontend"
                 sh "if curl 192.168.0.3 | grep 'input type=\"text\" name=\"message\"'; then echo \"frontend is working\"; else exit 1; fi"
+                sh "rm env"
                 sh "docker network rm testnet"
             }
         }
