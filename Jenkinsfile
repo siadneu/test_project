@@ -45,8 +45,8 @@ pipeline {
                 sh "docker system prune -fa"
                 sh "aws ecs update-service --service backend"
                 sh "aws ecs update-service --service fronted"
-                sh "aws ecs update-service --service backend --cluster test-project"
-                sh "aws ecs update-service --service frontend --cluster test-project"
+                sh "aws ecs update-service --service backend --region us-east-2 --cluster test-project"
+                sh "aws ecs update-service --service frontend --region us-east-2 --cluster test-project"
             }
         }
     }
