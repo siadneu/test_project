@@ -16,9 +16,9 @@ pipeline {
             steps {
                 echo 'Testing..'
                 sh "docker network create --driver=bridge --subnet=192.168.0.0/16 testnet"
-                sh "echo AWS_ACCESS_KEY_ID=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .AccessKeyId) >> env"
-                sh "echo AWS_SECRET_ACCESS_KEY=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .SecretAccessKey) >> env"
-                sh "echo AWS_SESSION_TOKEN=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .Token) >> env"
+                sh "echo AWS_ACCESS_KEY_ID=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .AccessKeyId | tr -d \") >> env"
+                sh "echo AWS_SECRET_ACCESS_KEY=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .SecretAccessKey | tr -d \" ) >> env"
+                sh "echo AWS_SESSION_TOKEN=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .Token tr -d \") >> env"
                 sh "echo  S3_BUCKET=testprojectmessages >> env"
                 sh "echo MESSAGES_FILE=messages.txt >> env"
                 sh "echo  AWS_REGION_NAME=us-east-2 >> env"
