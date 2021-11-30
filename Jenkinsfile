@@ -42,6 +42,7 @@ pipeline {
                 sh "docker push 261110884830.dkr.ecr.us-east-2.amazonaws.com/test_project:backend"
                 sh "docker push 261110884830.dkr.ecr.us-east-2.amazonaws.com/test_project:frontend"
                 sh "docker logout"
+                sh "docker system prune -fa"
             }
         }
     }
