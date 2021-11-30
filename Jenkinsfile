@@ -44,7 +44,7 @@ pipeline {
                 sh "docker logout"
                 sh "docker system prune -fa"
                 sh "AWS_DEFAULT_REGION=us-east-2 aws ecs update-service --service backend --cluster test-project"
-                sh "AWS_DEFAULT_REGION=us-east-2  aws ecs update-service --service fronted --cluster test-project"
+                sh "AWS_DEFAULT_REGION=us-east-2  aws ecs update-service --service frontend --cluster test-project"
             }
         }
     }
