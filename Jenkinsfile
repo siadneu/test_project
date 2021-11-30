@@ -43,11 +43,19 @@ pipeline {
                 sh "docker push 261110884830.dkr.ecr.us-east-2.amazonaws.com/test_project:frontend"
                 sh "docker logout"
                 sh "docker system prune -fa"
+                sh "export AWS_DEFAULT_REGION=us-east-2"
                 sh "aws ecs update-service --service backend"
                 sh "aws ecs update-service --service fronted"
-                sh "aws ecs update-service --service backend --region us-east-2 --cluster test-project"
-                sh "aws ecs update-service --service frontend --region us-east-2 --cluster test-project"
+                sh "aws ecs update-service --service backend --cluster test-project"
+                sh "aws ecs update-service --service frontend --cluster test-project"
             }
+        }
+    }
+    post {
+        failure {
+            sh "rm -rf ./*"
+            sh "docker logout"
+            sh "docker system prune -fa"
         }
     }
 }
