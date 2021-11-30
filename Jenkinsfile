@@ -16,9 +16,12 @@ pipeline {
             steps {
                 echo 'Testing..'
                 sh "docker network create --driver=bridge --subnet=192.168.0.0/16 testnet"
-                sh "echo AWS_ACCESS_KEY_ID=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .AccessKeyId | tr -d \") >> env"
-                sh "echo AWS_SECRET_ACCESS_KEY=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .SecretAccessKey | tr -d \" ) >> env"
-                sh "echo AWS_SESSION_TOKEN=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .Token tr -d \") >> env"
+                sh "AWS_ACCESS_KEY_ID=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .AccessKeyId)"
+                sh "echo AWS_ACCESS_KEY_ID=\${AWS_ACCESS_KEY_ID} >> env"
+                sh "AWS_SECRET_ACCESS_KEY=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .SecretAccessKey)"
+                sh "echo AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY} >> env"
+                sh "AWS_SESSION_TOKEN=\$(curl http://169.254.169.254/latest/meta-data/iam/security-credentials/fenkins-for-ecs-role | jq .Token)"
+                sh "echo AWS_SESSION_TOKEN=\${AWS_SESSION_TOKEN} >> env"
                 sh "echo  S3_BUCKET=testprojectmessages >> env"
                 sh "echo MESSAGES_FILE=messages.txt >> env"
                 sh "echo  AWS_REGION_NAME=us-east-2 >> env"
